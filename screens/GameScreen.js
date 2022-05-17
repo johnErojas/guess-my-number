@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, View, Alert } from 'react-native'
+import {StyleSheet, View, Alert, Text, FlatList } from 'react-native'
 import Title from "../components/ui/Title";
 import Andes from "./../utils/Andes"
 import NumberContainer from "../components/game/NumberContainer";
@@ -12,6 +12,7 @@ export default function GameScreen({userNumber, onGameOver}) {
 
     const initialGuess = Andes.randomBetween(1,100, userNumber);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
     useEffect(() => {
         if(currentGuess === userNumber){
@@ -31,14 +32,14 @@ export default function GameScreen({userNumber, onGameOver}) {
             return;
         }
         if(direction === 'lower'){
-            maxBoundary = currentGuess;
+            maxBoundary = currentGuess - 1;
         }else {
             minBoundary = currentGuess + 1;
         }
         const newRndNumber = Andes.randomBetween(minBoundary,maxBoundary,currentGuess);
         setCurrentGuess(newRndNumber);
+        setGuessRounds(current => [newRndNumber,...current]);
     }
-
 
     return (
         <View style={styles.screen}>
@@ -56,7 +57,11 @@ export default function GameScreen({userNumber, onGameOver}) {
                 </View>
             </Card>
             <View>
-
+                <FlatList
+                    data={guessRounds}
+                    renderItem={({item}) => <Text>{item}}</Text> }
+                    keyExtractor={item => item }
+                />
             </View>
         </View>
     );

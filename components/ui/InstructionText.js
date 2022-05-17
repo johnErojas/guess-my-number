@@ -3,8 +3,7 @@ import React from "react";
 import Colors from "../../constants/Colors";
 
 export default function InstructionText({children, style}) {
-
-    return <Text style={styles.instructionTxt}>{children}</Text>;
+    return <Text style={[styles.instructionTxt, style]}>{children}</Text>;
 }
 
 const styles = StyleSheet.create({
